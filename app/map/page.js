@@ -1,7 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 
-const UserMap = dynamic(() => import("@/componenets/UseMap"), {
+const UserMap = dynamic(() => import("@/components/UseMap"), {
   ssr: false, // ⛔ disables server-side rendering
 });
 
