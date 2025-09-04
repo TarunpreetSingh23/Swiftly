@@ -71,6 +71,9 @@ export default function Checkout() {
     if (!address.trim()) newErrors.address = "Address is required";
     if (!date) newErrors.date = "Please select a date";
     if (!timeSlot) newErrors.timeSlot = "Please select a time slot";
+    if (!pincode.trim()) newErrors.pincode = "Pincode is required";
+else if (!/^\d{6}$/.test(pincode)) newErrors.pincode = "Enter a valid 6-digit pincode";
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -190,13 +193,17 @@ console.log(formattedCart);
               />
               {errors.address && <span className="text-red-500 text-sm">{errors.address}</span>}
 
-              <input
-                type="text"
-                value={pincode}
-                placeholder="Pincode"
-                readOnly
-                className="p-3 rounded-lg border bg-gray-100 outline-none"
-              />
+             <input
+  type="text"
+  value={pincode}
+  onChange={(e) => setPincode(e.target.value)}
+  placeholder="Pincode"
+  className={`p-3 rounded-lg border focus:ring-2 focus:ring-indigo-500 outline-none transition ${
+    errors.pincode ? "border-red-500" : "border-gray-300"
+  }`}
+/>
+{errors.pincode && <span className="text-red-500 text-sm">{errors.pincode}</span>}
+
 
               <button
                 type="button"
