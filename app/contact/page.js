@@ -1,15 +1,24 @@
 "use client";
+import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
-import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function ContactSection() {
-   const handleChange = (e) => {
+    const {data:session}=useSession();
+    const router=useRouter();
+    const [services, setServices] = useState([]);
+    const [loading, setloading] = useState(true);
+    const [form, setForm] = useState({ firstName: "", lastName: "", email: "", message: "" });
+    // const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(null);
+    const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setloading(true);
     setSuccess(null);
 
     try {
@@ -22,14 +31,16 @@ export default function ContactSection() {
       const data = await res.json();
       if (data.success) {
         setSuccess("Message sent successfully 🎉");
+        router.push("/");
         setForm({ firstName: "", lastName: "", email: "", message: "" });
+        router.push("/");
       } else {
         setSuccess("Something went wrong ❌");
       }
     } catch (error) {
       setSuccess("Server error ❌");
     } finally {
-      setLoading(false);
+      setloading(false);
     }
   };
   return (
