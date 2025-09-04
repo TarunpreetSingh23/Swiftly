@@ -42,14 +42,14 @@ export default function Home() {
   }, []);
 
   return (
-    <>
+    < >
       {/* Hero Carousel Section */}
-      <div className="relative mt-[65px] w-full mb-4 z-0">
+      <div className="relative mt-[65px] w-[99vw] mb-4 z-0">
         <HeroCarousel />
       </div>
 
       {/* Categories Section */}
-      <div className="relative max-w-7xl mx-auto px-4 py-12 z-0">
+      <div className="relative w-[99vw] mx-auto px-4 py-12 z-0">
         <h1 className="text-4xl md:text-5xl font-extrabold text-center text-transparent bg-clip-text bg-[#5d7afc] drop-shadow-lg">
           Salon for Women
         </h1>
@@ -91,7 +91,7 @@ export default function Home() {
       </div>
 
       {/* Cleaning Section */}
-      <div className="relative max-w-7xl mx-auto px-4 py-12 z-0">
+      <div className="relative w-[99vw] mx-auto px-4 py-12 z-0">
         <h1 className="text-4xl md:text-5xl font-extrabold text-center text-transparent bg-clip-text bg-[#5d7afc] drop-shadow-lg">
           Cleaning Services
         </h1>
