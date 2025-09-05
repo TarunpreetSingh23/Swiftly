@@ -139,7 +139,7 @@ const handleCancel = async (orderId) => {
                     </p>
                   </div>
 
-                  {!task.is_completed && !task.is_canceled && !task.is_approved (
+                  {!task.is_completed && !task.is_canceled && task.is_approved !== true(
                     <button
   onClick={() => handleCancel(task.order_id)}
   className="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 rounded"
