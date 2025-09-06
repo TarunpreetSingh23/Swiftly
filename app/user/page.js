@@ -134,7 +134,7 @@ const handleCancel = async (orderId) => {
                         task.is_canceled ? "text-red-600" :
                         "text-yellow-600"
                       }`}>
-                        {task.is_canceled ? "Cancelled" : task.is_completed ? "Completed" : task.is_approved ? "Approved" : "waiting for approval"}
+                        {task.status}
                       </span>
                     </p>
                   </div>
