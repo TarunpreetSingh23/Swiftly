@@ -1,5 +1,6 @@
 import { connects } from "@/dbconfig/dbconfig";
 import Task from "@/models/task";
+import Worker from "@/models/Worker";
 
 export async function POST(req) {
   try {
@@ -7,7 +8,7 @@ export async function POST(req) {
 
     const {
       customerName,
-      email,         // ✅ added email
+      email,
       phone,
       address,
       pincode,
@@ -19,8 +20,7 @@ export async function POST(req) {
       timeSlot,
       paymentMethod,
     } = await req.json();
-   
-    // ✅ validate required fields
+
     if (
       !customerName ||
       !email ||
@@ -36,10 +36,26 @@ export async function POST(req) {
       );
     }
 
-    // ✅ create new task
+    // ✅ detect category prefix
+    const category = cart[0].category?.toLowerCase();
+    let prefix = "OR";
+    if (category === "makeup") prefix = "MU";
+    else if (category === "decor") prefix = "ED";
+    else if (category === "cleaning") prefix = "CL";
+
+    // ✅ find workers dynamically in DB
+    const workers = await Worker.find({ workerId: new RegExp(`^${prefix}`) });
+
+    // ✅ build assignedWorkers array
+    const assignedWorkers = workers.map((w) => ({
+      workerId: w.workerId,
+      status: "pending",
+    }));
+
+    // ✅ create task with assigned workers
     const task = await Task.create({
       customerName,
-      email,       // ✅ save email in DB
+      email,
       phone,
       address,
       pincode,
@@ -50,18 +66,18 @@ export async function POST(req) {
       date,
       timeSlot,
       paymentMethod: paymentMethod || "Pay After Service",
+      assignedWorkers,
     });
-    console.log(task)
 
     return new Response(
-      JSON.stringify({ success: true, orderId: task.order_id }),
+      JSON.stringify({ success: true, orderId: task.order_id, task }),
       {
         status: 201,
         headers: { "Content-Type": "application/json" },
       }
     );
   } catch (err) {
-    console.error(err);
+    console.error("Error creating task:", err);
     return new Response(
       JSON.stringify({ success: false, message: "Server Error" }),
       {
